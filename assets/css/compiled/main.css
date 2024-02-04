@@ -1,6 +1,6 @@
 /*! Congo v2.6.1 | MIT License | https://github.com/jpanther/congo */
 
-/*! tailwindcss v3.3.2 | MIT License | https://tailwindcss.com */
+/*! tailwindcss v3.4.1 | MIT License | https://tailwindcss.com */
 
 /*
 1. Prevent padding and border from affecting element width. (https://github.com/mozdevs/cssremedy/issues/4)
@@ -32,9 +32,11 @@
 4. Use the user's configured `sans` font-family by default.
 5. Use the user's configured `sans` font-feature-settings by default.
 6. Use the user's configured `sans` font-variation-settings by default.
+7. Disable tap highlights on iOS
 */
 
-html {
+html,
+:host {
   line-height: 1.5;
   /* 1 */
   -webkit-text-size-adjust: 100%;
@@ -44,12 +46,14 @@ html {
   -o-tab-size: 4;
      tab-size: 4;
   /* 3 */
-  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   /* 4 */
   font-feature-settings: normal;
   /* 5 */
   font-variation-settings: normal;
   /* 6 */
+  -webkit-tap-highlight-color: transparent;
+  /* 7 */
 }
 
 /*
@@ -121,8 +125,10 @@ strong {
 }
 
 /*
-1. Use the user's configured `mono` font family by default.
-2. Correct the odd `em` font sizing in all browsers.
+1. Use the user's configured `mono` font-family by default.
+2. Use the user's configured `mono` font-feature-settings by default.
+3. Use the user's configured `mono` font-variation-settings by default.
+4. Correct the odd `em` font sizing in all browsers.
 */
 
 code,
@@ -131,8 +137,12 @@ samp,
 pre {
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   /* 1 */
-  font-size: 1em;
+  font-feature-settings: normal;
   /* 2 */
+  font-variation-settings: normal;
+  /* 3 */
+  font-size: 1em;
+  /* 4 */
 }
 
 /*
@@ -190,6 +200,10 @@ optgroup,
 select,
 textarea {
   font-family: inherit;
+  /* 1 */
+  font-feature-settings: inherit;
+  /* 1 */
+  font-variation-settings: inherit;
   /* 1 */
   font-size: 100%;
   /* 1 */
@@ -338,6 +352,14 @@ ul,
 menu {
   list-style: none;
   margin: 0;
+  padding: 0;
+}
+
+/*
+Reset default styling for dialogs.
+*/
+
+dialog {
   padding: 0;
 }
 
@@ -1044,32 +1066,32 @@ body:has(#menu-controller:checked) {
 
 /* RTL support */
 
-:is([dir="rtl"] .prose blockquote) {
+.prose blockquote:where([dir="rtl"], [dir="rtl"] *) {
   border-left-width: 0px;
   border-right-width: 4px;
   padding-right: 1rem;
 }
 
-:is([dir="rtl"] .prose ul > li),:is([dir="rtl"] 
-.prose ol > li) {
+.prose ul > li:where([dir="rtl"], [dir="rtl"] *),
+.prose ol > li:where([dir="rtl"], [dir="rtl"] *) {
   margin-right: 1.75rem;
   padding-left: 0px;
   padding-right: 0.5rem;
 }
 
-:is([dir="rtl"] .prose ol > li):before,:is([dir="rtl"] 
-.prose ul > li):before {
+.prose ol > li:where([dir="rtl"], [dir="rtl"] *):before,
+.prose ul > li:where([dir="rtl"], [dir="rtl"] *):before {
   left: auto;
   right: 0.25rem;
 }
 
-:is([dir="rtl"] .prose thead td:first-child),:is([dir="rtl"] 
-.prose thead th:first-child) {
+.prose thead td:first-child:where([dir="rtl"], [dir="rtl"] *),
+.prose thead th:first-child:where([dir="rtl"], [dir="rtl"] *) {
   padding-right: 0px;
 }
 
-:is([dir="rtl"] .prose thead td:last-child),:is([dir="rtl"] 
-.prose thead th:last-child) {
+.prose thead td:last-child:where([dir="rtl"], [dir="rtl"] *),
+.prose thead th:last-child:where([dir="rtl"], [dir="rtl"] *) {
   padding-left: 0px;
 }
 
@@ -1090,8 +1112,7 @@ body:has(#menu-controller:checked) {
 }
 
 .toc ul ul {
-  -webkit-padding-start: 1rem;
-          padding-inline-start: 1rem;
+  padding-inline-start: 1rem;
 }
 
 .toc a {
@@ -1105,7 +1126,7 @@ body:has(#menu-controller:checked) {
   color: rgba(var(--color-neutral-400), var(--tw-text-opacity));
 }
 
-:is([dir="rtl"] .toc ul > li) {
+.toc ul > li:where([dir="rtl"], [dir="rtl"] *) {
   margin-right: 0px;
 }
 
@@ -1790,8 +1811,7 @@ body:has(#menu-controller:checked) {
 }
 
 .-ms-5 {
-  -webkit-margin-start: -1.25rem;
-          margin-inline-start: -1.25rem;
+  margin-inline-start: -1.25rem;
 }
 
 .-mt-3 {
@@ -1827,18 +1847,15 @@ body:has(#menu-controller:checked) {
 }
 
 .me-14 {
-  -webkit-margin-end: 3.5rem;
-          margin-inline-end: 3.5rem;
+  margin-inline-end: 3.5rem;
 }
 
 .me-2 {
-  -webkit-margin-end: 0.5rem;
-          margin-inline-end: 0.5rem;
+  margin-inline-end: 0.5rem;
 }
 
 .me-4 {
-  -webkit-margin-end: 1rem;
-          margin-inline-end: 1rem;
+  margin-inline-end: 1rem;
 }
 
 .ml-2 {
@@ -1850,13 +1867,11 @@ body:has(#menu-controller:checked) {
 }
 
 .ms-1 {
-  -webkit-margin-start: 0.25rem;
-          margin-inline-start: 0.25rem;
+  margin-inline-start: 0.25rem;
 }
 
 .ms-2 {
-  -webkit-margin-start: 0.5rem;
-          margin-inline-start: 0.5rem;
+  margin-inline-start: 0.5rem;
 }
 
 .mt-0 {
@@ -2289,33 +2304,27 @@ body:has(#menu-controller:checked) {
 }
 
 .pe-2 {
-  -webkit-padding-end: 0.5rem;
-          padding-inline-end: 0.5rem;
+  padding-inline-end: 0.5rem;
 }
 
 .pe-3 {
-  -webkit-padding-end: 0.75rem;
-          padding-inline-end: 0.75rem;
+  padding-inline-end: 0.75rem;
 }
 
 .pe-4 {
-  -webkit-padding-end: 1rem;
-          padding-inline-end: 1rem;
+  padding-inline-end: 1rem;
 }
 
 .pe-5 {
-  -webkit-padding-end: 1.25rem;
-          padding-inline-end: 1.25rem;
+  padding-inline-end: 1.25rem;
 }
 
 .ps-2 {
-  -webkit-padding-start: 0.5rem;
-          padding-inline-start: 0.5rem;
+  padding-inline-start: 0.5rem;
 }
 
 .ps-5 {
-  -webkit-padding-start: 1.25rem;
-          padding-inline-start: 1.25rem;
+  padding-inline-start: 1.25rem;
 }
 
 .pt-3 {
@@ -2691,38 +2700,6 @@ body:has(#menu-controller:checked) {
   opacity: 1;
 }
 
-:is([dir="ltr"] .ltr\:block) {
-  display: block;
-}
-
-:is([dir="ltr"] .ltr\:inline) {
-  display: inline;
-}
-
-:is([dir="ltr"] .ltr\:hidden) {
-  display: none;
-}
-
-:is([dir="ltr"] .ltr\:text-right) {
-  text-align: right;
-}
-
-:is([dir="rtl"] .rtl\:block) {
-  display: block;
-}
-
-:is([dir="rtl"] .rtl\:inline) {
-  display: inline;
-}
-
-:is([dir="rtl"] .rtl\:hidden) {
-  display: none;
-}
-
-:is([dir="rtl"] .rtl\:text-left) {
-  text-align: left;
-}
-
 :is(.dark .dark\:inline) {
   display: inline;
 }
@@ -2868,20 +2845,13 @@ body:has(#menu-controller:checked) {
   color: rgba(var(--color-primary-400), var(--tw-text-opacity));
 }
 
-@media print {
-  .print\:hidden {
-    display: none;
-  }
-}
-
 @media (min-width: 640px) {
   .sm\:mb-0 {
     margin-bottom: 0px;
   }
 
   .sm\:me-7 {
-    -webkit-margin-end: 1.75rem;
-            margin-inline-end: 1.75rem;
+    margin-inline-end: 1.75rem;
   }
 
   .sm\:flex {
@@ -2931,8 +2901,7 @@ body:has(#menu-controller:checked) {
   }
 
   .sm\:pe-6 {
-    -webkit-padding-end: 1.5rem;
-            padding-inline-end: 1.5rem;
+    padding-inline-end: 1.5rem;
   }
 
   .sm\:pt-10 {
@@ -2945,13 +2914,11 @@ body:has(#menu-controller:checked) {
   }
 
   .sm\:last\:me-0:last-child {
-    -webkit-margin-end: 0px;
-            margin-inline-end: 0px;
+    margin-inline-end: 0px;
   }
 
   .sm\:last\:me-0\.5:last-child {
-    -webkit-margin-end: 0.125rem;
-            margin-inline-end: 0.125rem;
+    margin-inline-end: 0.125rem;
   }
 }
 
@@ -3009,13 +2976,50 @@ body:has(#menu-controller:checked) {
   }
 
   .lg\:ps-8 {
-    -webkit-padding-start: 2rem;
-            padding-inline-start: 2rem;
+    padding-inline-start: 2rem;
   }
 }
 
 @media (min-width: 1280px) {
   .xl\:w-1\/5 {
     width: 20%;
+  }
+}
+
+.ltr\:block:where([dir="ltr"], [dir="ltr"] *) {
+  display: block;
+}
+
+.ltr\:inline:where([dir="ltr"], [dir="ltr"] *) {
+  display: inline;
+}
+
+.ltr\:hidden:where([dir="ltr"], [dir="ltr"] *) {
+  display: none;
+}
+
+.ltr\:text-right:where([dir="ltr"], [dir="ltr"] *) {
+  text-align: right;
+}
+
+.rtl\:block:where([dir="rtl"], [dir="rtl"] *) {
+  display: block;
+}
+
+.rtl\:inline:where([dir="rtl"], [dir="rtl"] *) {
+  display: inline;
+}
+
+.rtl\:hidden:where([dir="rtl"], [dir="rtl"] *) {
+  display: none;
+}
+
+.rtl\:text-left:where([dir="rtl"], [dir="rtl"] *) {
+  text-align: left;
+}
+
+@media print {
+  .print\:hidden {
+    display: none;
   }
 }
